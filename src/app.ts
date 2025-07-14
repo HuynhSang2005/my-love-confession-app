@@ -10,58 +10,61 @@ const yesBtn = document.querySelector('.yes-btn')!;
 const noBtn = document.querySelector('.no-btn') as HTMLButtonElement;
 const answerText = document.querySelector('.answer-text') as HTMLParagraphElement;
 
-// --- Logic cho trang câu hỏi ---
 let noButtonMoveCount = 0;
-const MAX_MOVES = 2; // Nút sẽ di chuyển 2 lần, đến lần thứ 3 thì dừng lại
+const MAX_MOVES = 3;
+let noBtnCanClick = false;
 
-function moveButton() {
-  if (noButtonMoveCount >= MAX_MOVES) {
-    noBtn.removeEventListener('mouseover', moveButton);
-    noBtn.removeEventListener('click', moveButton); // Xóa luôn event click để nó có thể được click thật sự
-    return;
+function moveNoBtn() {
+  if (noButtonMoveCount < MAX_MOVES) {
+    noButtonMoveCount++;
+    noBtn.classList.add('moving');
+    // Tính vị trí random trong viewport
+    const btnRect = noBtn.getBoundingClientRect();
+    const maxX = window.innerWidth - btnRect.width - 20;
+    const maxY = window.innerHeight - btnRect.height - 20;
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+    noBtn.style.left = `${randomX}px`;
+    noBtn.style.top = `${randomY}px`;
+    setTimeout(() => {
+      noBtn.classList.remove('moving');
+      if (noButtonMoveCount === MAX_MOVES) {
+        noBtnCanClick = true;
+        noBtn.style.opacity = '1';
+      }
+    }, 300);
   }
-  
-  noButtonMoveCount++;
-
-  const noBtnRect = noBtn.getBoundingClientRect();
-  const maxX = window.innerWidth - noBtnRect.width;
-  const maxY = window.innerHeight - noBtnRect.height;
-
-  const randomX = Math.floor(Math.random() * maxX);
-  const randomY = Math.floor(Math.random() * maxY);
-
-  noBtn.style.left = `${randomX}px`;
-  noBtn.style.top = `${randomY}px`;
 }
 
-// Gắn sự kiện cho nút "Không yêu"
-noBtn.addEventListener('mouseover', moveButton);
+noBtn.addEventListener('mouseover', () => {
+  if (!noBtnCanClick) moveNoBtn();
+});
 noBtn.addEventListener('click', () => {
-  // Nếu vẫn còn di chuyển được, thì click cũng sẽ di chuyển nút
-  if (noButtonMoveCount < MAX_MOVES) {
-    moveButton();
+  if (!noBtnCanClick) {
+    moveNoBtn();
   } else {
-    // Khi đã dừng di chuyển, click sẽ hiện ra thông báo
-    answerText.textContent = 'Anh hiểu rồi, em có thương yêu gì tôi! Ai rồi cũng kháccccc 😢';
+    answerText.textContent = 'Anh hiểu rồi, em có thương yêu gì tôi ! Ai rồi cũng kháccccc';
+    setTimeout(() => {
+      navigateTo('gallery');
+    }, 1200);
   }
 });
 
-// Gắn sự kiện cho nút "Có yêu"
 yesBtn.addEventListener('click', () => {
   navigateTo('gallery');
 });
 
-// --- Hàm điều hướng (Router) ---
 function navigateTo(page: 'question' | 'gallery') {
   if (page === 'gallery') {
     questionPage.classList.remove('active');
     galleryPage.classList.add('active');
     body.classList.add('gallery-active');
-    // Khởi tạo gallery khi chuyển trang
+    // Khởi động hiệu ứng gallery và trái tim nếu cần
     initGallery();
+    initWebGLHeartAnimation();
   } else {
-    galleryPage.classList.remove('active');
     questionPage.classList.add('active');
+    galleryPage.classList.remove('active');
     body.classList.remove('gallery-active');
   }
 }

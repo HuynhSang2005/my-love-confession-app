@@ -116,10 +116,19 @@ body.gallery-active {
 }
 
 .no-btn {
-  position: absolute; /* Important for moving */
+  position: absolute;
   background: var(--white-color);
   color: var(--secondary-color);
   border: 2px solid var(--secondary-color);
+  left: 0;
+  top: 0;
+  transition: left 0.3s, top 0.3s;
+  z-index: 10;
+}
+
+.no-btn.moving {
+  pointer-events: none;
+  opacity: 0.7;
 }
 
 .yes-btn:hover {
@@ -131,7 +140,9 @@ body.gallery-active {
   margin-top: 20px;
   font-size: 1.2em;
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--secondary-color);
+  min-height: 1.5em;
+  transition: color 0.3s;
 }
 
 /* --- Gallery Page Styles --- */
