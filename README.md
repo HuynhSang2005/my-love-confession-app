@@ -1,3 +1,10 @@
+<p align="center">
+    <img src="https://bun.sh/logo.svg" width="80" />
+  &nbsp;
+    &nbsp;
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Typescript.svg/250px-Typescript.svg.png" width="80" />
+</p>
+
 # Thử Thách Tình Yêu - My Love Confession App ❤️
 
 Bạn đã bao giờ muốn tỏ tình hoặc trêu ghẹo người thương của mình bằng một trang web "cây nhà lá vườn" chưa? Nếu có thì đây chính là "vũ khí tối thượng" dành cho bạn!
